@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Enterprise Inventory System</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <div class="dashboard-container">
+
+
+        <!-- Sidebar -->
+
+        <aside class="sidebar">
+
+            <div class="brand">
+
+                <div class="logo">
+                    EIS
+                </div>
+
+                <h2>
+                    Enterprise
+                </h2>
+
+            </div>
+
+
+            <ul class="menu">
+
+                <li class="active">
+                    <a href="{{ url_for('dashboard') }}">🏠 Dashboard</a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('products') }}">📦 Products</a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('add_product_page') }}">➕ Add Product</a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('analytics') }}">
+                        📊 Analytics
+                    </a>
+                </li>
+
+            </ul>
+
+            <div class="logout">
+
+                <a href="{{ url_for('logout') }}">
+                    🚪 Logout
+                </a>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- Main Content -->
+
+
+        <main class="main-content">
+
+
+            <header>
+
+                <h1>
+                    Welcome Back, Admin 👋
+                </h1>
+
+                <p>
+                    Manage your inventory and monitor business performance.
+                </p>
+
+            </header>
+
+
+
+            <!-- Cards -->
+
+
+            <section class="stats">
+
+
+                <div class="stat-card">
+
+                    <div class="card-top">
+
+                        <div class="card-icon">
+                            📦
+                        </div>
+
+                        <span class="status">
+                            Active
+                        </span>
+
+                    </div>
+
+
+                    <h3>
+                        Total Products
+                    </h3>
+
+
+                    <h1>
+                        {{ total_products }}
+                    </h1>
+
+
+                    <p>
+                        Products Available
+                    </p>
+
+
+                </div>
+
+
+
+                <div class="stat-card">
+
+
+                    <div class="card-top">
+
+                        <div class="card-icon">
+                            📊
+                        </div>
+
+                        <span class="status">
+                            Stock
+                        </span>
+
+                    </div>
+
+
+                    <h3>
+                        Total Quantity
+                    </h3>
+
+
+                    <h1>
+                        {{ total_quantity }}
+                    </h1>
+
+
+                    <p>
+                        Total Units
+                    </p>
+
+
+                </div>
+
+
+
+
+                <div class="stat-card">
+
+
+                    <div class="card-top">
+
+                        <div class="card-icon">
+                            💰
+                        </div>
+
+
+                        <span class="status">
+                            Value
+                        </span>
+
+                    </div>
+
+
+                    <h3>
+                        Inventory Value
+                    </h3>
+
+
+                    <h1>
+                        ₹{{ total_value }}
+                    </h1>
+
+
+                    <p>
+                        Current Worth
+                    </p>
+
+
+                </div>
+
+
+
+
+                <div class="stat-card">
+
+
+                    <div class="card-top">
+
+                        <div class="card-icon">
+                            ⚠️
+                        </div>
+
+
+                        <span class="status danger">
+                            Alert
+                        </span>
+
+                    </div>
+
+
+                    <h3>
+                        Low Stock
+                    </h3>
+
+
+                    <h1>
+                        {{ low_stock }}
+                    </h1>
+
+
+                    <p>
+                        Need Attention
+                    </p>
+
+
+                </div>
+
+
+            </section>
+
+
+
+
+
+            <!-- Chart -->
+
+
+            <section class="content-box">
+
+
+                <h2>
+                    📈 Inventory Analytics
+                </h2>
+
+
+                <div class="chart-container">
+
+                    <canvas id="inventoryChart"></canvas>
+
+                </div>
+
+
+            </section>
+
+
+
+
+
+            <!-- Bottom Section -->
+
+
+            <section class="bottom-grid">
+
+
+
+                <div class="content-box">
+
+
+                    <h2>
+                        🚨 Stock Alerts
+                    </h2>
+
+
+                    <ul>
+
+
+                        {% if low_stock_products %}
+
+
+                        {% for product in low_stock_products %}
+
+                        <li>
+                            ⚠ {{ product[1] }} - {{ product[3] }} left
+                        </li>
+
+                        {% endfor %}
+
+
+                        {% else %}
+
+
+                        <li>
+                            🎉 No stock alerts
+                        </li>
+
+
+                        {% endif %}
+
+
+                    </ul>
+
+
+                </div>
+
+
+
+
+
+                <div class="content-box activity-box">
+
+
+                    <h2>
+                        🕒 Recent Activity
+                    </h2>
+
+
+
+                    <div class="activity-list">
+
+
+                        {% if recent_activities %}
+
+
+                        {% for activity in recent_activities %}
+
+
+                        <div class="activity-item">
+
+
+                            <div class="activity-icon">
+
+
+                                {% if "Added" in activity[0] %}
+
+                                🟢
+
+                                {% elif "Updated" in activity[0] %}
+
+                                🔵
+
+                                {% elif "Deleted" in activity[0] %}
+
+                                🔴
+
+                                {% else %}
+
+                                ⚪
+
+                                {% endif %}
+
+
+                            </div>
+
+
+
+                            <div class="activity-text">
+
+
+                                <p>
+                                    {{ activity[0] }}
+                                </p>
+
+
+                                <small>
+                                    {{ activity[1] }}
+                                </small>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                        {% endfor %}
+
+
+                        {% else %}
+
+
+                        <p>
+                            No recent activity
+                        </p>
+
+
+                        {% endif %}
+
+
+
+                    </div>
+
+
+                </div>
+
+
+
+            </section>
+
+
+
+        </main>
+
+
+    </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <script>
+
+
+        const inventoryData = JSON.parse('{{ [total_products, total_quantity, total_value] | tojson }}');
+
+
+        const ctx = document.getElementById('inventoryChart');
+
+
+        new Chart(ctx, {
+
+            type: 'bar',
+
+            data: {
+
+                labels: [
+                    'Products',
+                    'Quantity',
+                    'Value'
+                ],
+
+                datasets: [
+
+                    {
+
+                        label: 'Inventory',
+
+                        data: inventoryData
+
+                    }
+
+                ]
+
+            },
+
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+
+                plugins: {
+
+                    legend: {
+
+                        display: false
+
+                    }
+
+                },
+
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true
+
+                    }
+
+                }
+
+            }
+
+        });
+
+
+    </script>
+
+
+</body>
+
+</html>
