@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Product - Enterprise Inventory System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+
+<body>
+
+    <div class="add-product-page">
+
+        <!-- Background Decoration -->
+        <div class="bg-circle bg-circle-one"></div>
+        <div class="bg-circle bg-circle-two"></div>
+
+        <div class="add-product-container">
+
+            <!-- Header -->
+            <div class="add-product-header">
+
+                <div>
+                    <div class="page-label">
+                        INVENTORY MANAGEMENT
+                    </div>
+
+                    <h1>
+                        Add New Product
+                    </h1>
+
+                    <p>
+                        Add a new product and keep your inventory up to date.
+                    </p>
+                </div>
+
+                <a href="{{ url_for('products') }}" class="back-products-btn">
+                    <span>←</span>
+                    Back to Products
+                </a>
+
+            </div>
+
+
+            <!-- Main Card -->
+            <div class="add-product-card">
+
+                <!-- Left Information Panel -->
+                <div class="product-info-panel">
+
+                    <div class="product-icon">
+                        📦
+                    </div>
+
+                    <h2>
+                        Product Information
+                    </h2>
+
+                    <p>
+                        Enter the product details below to add a new item
+                        to your inventory.
+                    </p>
+
+                    <div class="info-line"></div>
+
+                    <div class="info-item">
+                        <div class="info-number">01</div>
+                        <div>
+                            <strong>Product Details</strong>
+                            <span>Enter the product name</span>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-number">02</div>
+                        <div>
+                            <strong>Pricing</strong>
+                            <span>Set the product price</span>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-number">03</div>
+                        <div>
+                            <strong>Inventory</strong>
+                            <span>Enter available quantity</span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Form Panel -->
+                <div class="product-form-panel">
+
+                    <form action="{{ url_for('save_product') }}" method="POST">
+
+                        <!-- Product Name -->
+                        <div class="form-group">
+
+                            <label for="product_name">
+                                Product Name
+                            </label>
+
+                            <div class="input-wrapper">
+                                <span class="input-icon">📦</span>
+
+                                <input type="text" id="product_name" name="product_name"
+                                    placeholder="Enter product name" required autocomplete="off">
+                            </div>
+
+                        </div>
+
+
+                        <!-- Price -->
+                        <div class="form-group">
+
+                            <label for="price">
+                                Product Price
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="currency-symbol">₹</span>
+
+                                <input type="number" id="price" name="price" placeholder="Enter product price" min="0"
+                                    step="0.01" required>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Quantity -->
+                        <div class="form-group">
+
+                            <label for="quantity">
+                                Quantity
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">▣</span>
+
+                                <input type="number" id="quantity" name="quantity" placeholder="Enter quantity" min="0"
+                                    required>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Buttons -->
+                        <div class="form-actions">
+
+                            <a href="{{ url_for('products') }}" class="cancel-btn">
+                                Cancel
+                            </a>
+
+                            <button type="submit" class="save-product-btn">
+                                <span>✓</span>
+                                Save Product
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer -->
+            <div class="add-product-footer">
+                <span>●</span>
+                Inventory System
+                <span class="footer-divider">|</span>
+                Secure Product Management
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
