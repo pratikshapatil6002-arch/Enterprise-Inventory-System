@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | Enterprise Inventory System</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <div class="dashboard-container">
+
+
+        <!-- Sidebar -->
+
+        <aside class="sidebar">
+
+
+            <div class="brand">
+
+                <div class="logo">
+                    EIS
+                </div>
+
+                <h2>
+                    Enterprise
+                </h2>
+
+            </div>
+
+
+
+            <ul class="menu">
+
+
+                <li>
+                    <a href="{{ url_for('dashboard') }}">
+                        🏠 Dashboard
+                    </a>
+                </li>
+
+
+                <li>
+                    <a href="{{ url_for('products') }}">
+                        📦 Products
+                    </a>
+                </li>
+
+
+                <li>
+                    <a href="{{ url_for('add_product_page') }}">
+                        ➕ Add Product
+                    </a>
+                </li>
+
+
+                <li>
+                    <a href="{{ url_for('analytics') }}">
+                        📊 Analytics
+                    </a>
+                </li>
+
+
+                <li class="active">
+                    <a href="{{ url_for('settings') }}">
+                        ⚙ Settings
+                    </a>
+                </li>
+
+
+            </ul>
+
+
+
+            <div class="logout">
+
+                <a href="{{ url_for('logout') }}">
+                    🚪 Logout
+                </a>
+
+            </div>
+
+
+        </aside>
+
+
+
+
+
+        <!-- Main Content -->
+
+
+        <main class="main-content">
+
+
+            <header>
+
+                <h1>
+                    ⚙ Settings
+                </h1>
+
+                <p>
+                    Manage your application preferences.
+                </p>
+
+            </header>
+
+
+
+
+
+            <section class="bottom-grid">
+
+
+                <div class="content-box">
+
+                    <h2>
+                        👤 Profile Settings
+                    </h2>
+
+
+                    <p>
+                        Username : Admin
+                    </p>
+
+
+                    <p>
+                        Role : Administrator
+                    </p>
+
+
+                </div>
+
+
+
+
+
+                <div class="content-box">
+
+                    <h2>
+                        🔐 Change Password
+                    </h2>
+
+
+                    <form action="{{ url_for('change_password') }}" method="POST">
+
+
+                        <p>
+                            Old Password
+                        </p>
+
+                        <input type="password" name="old_password" required>
+
+
+
+                        <p>
+                            New Password
+                        </p>
+
+                        <input type="password" name="new_password" required>
+
+
+
+                        <br><br>
+
+
+                        <button type="submit">
+                            Update Password
+                        </button>
+
+
+                    </form>
+
+
+                </div>
+
+            </section>
+
+            <section class="content-box">
+                <h2>
+                    📦 Inventory Settings
+                </h2>
+
+
+                <p>
+                    Low Stock Alert Limit
+                </p>
+
+
+                <input type="number" value="5">
+
+
+                <br><br>
+
+
+                <button>
+                    Save Changes
+                </button>
+
+
+            </section>
+
+
+
+        </main>
+
+
+
+    </div>
+
+
+
+</body>
+
+</html>
