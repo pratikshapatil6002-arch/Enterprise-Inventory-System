@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Product - Enterprise Inventory System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            min-height: 100vh;
+            color: #172033;
+
+            background:
+                radial-gradient(circle at 90% 10%,
+                    rgba(37, 99, 235, 0.15),
+                    transparent 30%),
+                radial-gradient(circle at 5% 90%,
+                    rgba(99, 102, 241, 0.12),
+                    transparent 32%),
+                linear-gradient(135deg,
+                    #f7faff 0%,
+                    #eef3fb 50%,
+                    #f9fbff 100%);
+
+            overflow-x: hidden;
+        }
+
+
+        /* ================================
+           DECORATIVE BACKGROUND
+        ================================= */
+
+        body::before {
+            content: "";
+
+            position: fixed;
+
+            width: 420px;
+            height: 420px;
+
+            right: -210px;
+            top: -190px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(37, 99, 235, 0.10);
+
+            box-shadow:
+                0 0 100px rgba(37, 99, 235, 0.08);
+
+            pointer-events: none;
+        }
+
+
+        body::after {
+            content: "";
+
+            position: fixed;
+
+            width: 330px;
+            height: 330px;
+
+            left: -190px;
+            bottom: -180px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(79, 70, 229, 0.10);
+
+            box-shadow:
+                0 0 100px rgba(79, 70, 229, 0.06);
+
+            pointer-events: none;
+        }
+
+
+        /* ================================
+           PAGE
+        ================================= */
+
+        .edit-page {
+            width: 100%;
+            min-height: 100vh;
+
+            padding: 55px 60px;
+
+            position: relative;
+            z-index: 1;
+        }
+
+
+        .edit-container {
+            width: 100%;
+            max-width: 1150px;
+
+            margin: auto;
+        }
+
+
+        /* ================================
+           HEADER
+        ================================= */
+
+        .top-header {
+            display: flex;
+
+            align-items: flex-end;
+            justify-content: space-between;
+
+            gap: 30px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .heading-area {
+            flex: 1;
+        }
+
+
+        .page-label {
+            display: inline-block;
+
+            margin-bottom: 10px;
+
+            color: #2563eb;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+
+        .heading-area h1 {
+            color: #101827;
+
+            font-size: 43px;
+            line-height: 1.1;
+
+            font-weight: 800;
+
+            letter-spacing: -1.5px;
+        }
+
+
+        .heading-area p {
+            margin-top: 10px;
+
+            color: #64748b;
+
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+
+        /* ================================
+           BACK BUTTON
+        ================================= */
+
+        .back-button {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            height: 47px;
+
+            padding: 0 20px;
+
+            border: 1px solid #dbe3ef;
+            border-radius: 11px;
+
+            background: rgba(255, 255, 255, 0.9);
+
+            color: #334155;
+
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            box-shadow:
+                0 8px 25px rgba(15, 23, 42, 0.06);
+
+            transition: 0.25s ease;
+        }
+
+
+        .back-button:hover {
+            transform: translateY(-2px);
+
+            color: #2563eb;
+
+            border-color: #93c5fd;
+
+            box-shadow:
+                0 12px 28px rgba(37, 99, 235, 0.10);
+        }
+
+
+        .back-arrow {
+            font-size: 18px;
+        }
+
+
+        /* ================================
+           MAIN CARD
+        ================================= */
+
+        .edit-card {
+            display: grid;
+
+            grid-template-columns: 340px 1fr;
+
+            min-height: 650px;
+
+            overflow: hidden;
+
+            border-radius: 23px;
+
+            background: #ffffff;
+
+            border: 1px solid rgba(226, 232, 240, 0.95);
+
+            box-shadow:
+                0 30px 70px rgba(15, 23, 42, 0.10),
+                0 8px 20px rgba(15, 23, 42, 0.04);
+        }
+
+
+        /* ================================
+           LEFT PANEL
+        ================================= */
+
+        .edit-side {
+            position: relative;
+
+            padding: 42px 35px;
+
+            overflow: hidden;
+
+            color: white;
+
+            background:
+                linear-gradient(150deg,
+                    #111c3b 0%,
+                    #173b91 52%,
+                    #2563eb 100%);
+        }
+
+
+        .edit-side::before {
+            content: "";
+
+            position: absolute;
+
+            width: 280px;
+            height: 280px;
+
+            right: -160px;
+            bottom: -120px;
+
+            border-radius: 50%;
+
+            border: 35px solid rgba(255, 255, 255, 0.045);
+        }
+
+
+        .edit-side::after {
+            content: "";
+
+            position: absolute;
+
+            width: 120px;
+            height: 120px;
+
+            right: -55px;
+            top: 55px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(255, 255, 255, 0.09);
+        }
+
+
+        .edit-icon {
+            width: 66px;
+            height: 66px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 27px;
+
+            border-radius: 17px;
+
+            background: rgba(255, 255, 255, 0.12);
+
+            border: 1px solid rgba(255, 255, 255, 0.16);
+
+            font-size: 28px;
+
+            box-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+
+        .edit-side h2 {
+            color: #ffffff;
+
+            font-size: 25px;
+
+            font-weight: 800;
+
+            margin-bottom: 11px;
+        }
+
+
+        .edit-side>p {
+            max-width: 260px;
+
+            color: rgba(255, 255, 255, 0.70);
+
+            font-size: 14px;
+
+            line-height: 1.7;
+        }
+
+
+        /* ================================
+           CURRENT PRODUCT
+        ================================= */
+
+        .current-product {
+            position: relative;
+
+            z-index: 2;
+
+            margin-top: 34px;
+
+            padding: 18px;
+
+            border-radius: 14px;
+
+            background: rgba(255, 255, 255, 0.08);
+
+            border: 1px solid rgba(255, 255, 255, 0.10);
+        }
+
+
+        .current-label {
+            margin-bottom: 7px;
+
+            color: rgba(255, 255, 255, 0.52);
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+        }
+
+
+        .current-name {
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: 750;
+
+            word-break: break-word;
+        }
+
+
+        .current-id {
+            margin-top: 6px;
+
+            color: rgba(255, 255, 255, 0.52);
+
+            font-size: 11px;
+        }
+
+
+        /* ================================
+           STEPS
+        ================================= */
+
+        .edit-steps {
+            margin-top: 30px;
+        }
+
+
+        .step {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 16px;
+        }
+
+
+        .step-number {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 10px;
+
+            background: rgba(255, 255, 255, 0.10);
+
+            color: white;
+
+            font-size: 11px;
+
+            font-weight: 800;
+        }
+
+
+        .step-text {
+            color: rgba(255, 255, 255, 0.68);
+
+            font-size: 11px;
+        }
+
+
+        /* ================================
+           FORM AREA
+        ================================= */
+
+        .edit-form-area {
+            padding: 43px 52px;
+
+            display: flex;
+
+            align-items: center;
+
+            background: #ffffff;
+        }
+
+
+        .edit-form {
+            width: 100%;
+        }
+
+
+        .form-heading {
+            margin-bottom: 28px;
+        }
+
+
+        .form-heading h3 {
+            color: #172033;
+
+            font-size: 22px;
+
+            font-weight: 800;
+        }
+
+
+        .form-heading p {
+            margin-top: 6px;
+
+            color: #94a3b8;
+
+            font-size: 12px;
+        }
+
+
+        /* ================================
+           FORM GRID
+        ================================= */
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 0 18px;
+        }
+
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+
+        .field.full-width {
+            grid-column: 1 / -1;
+        }
+
+
+        .field label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #334155;
+
+            font-size: 13px;
+
+            font-weight: 750;
+        }
+
+
+        .field label::after {
+            content: " *";
+
+            color: #ef4444;
+        }
+
+
+        .input-box {
+            position: relative;
+        }
+
+
+        .input-symbol {
+            position: absolute;
+
+            left: 17px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #2563eb;
+
+            font-size: 16px;
+
+            pointer-events: none;
+
+            z-index: 2;
+        }
+
+
+        .field input {
+            width: 100%;
+            height: 53px;
+
+            padding: 0 17px 0 48px;
+
+            border: 1px solid #dce4ef;
+
+            border-radius: 11px;
+
+            outline: none;
+
+            background: #f8fafc;
+
+            color: #172033;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            transition: 0.22s ease;
+        }
+
+
+        .field input:hover {
+            background: #ffffff;
+
+            border-color: #bfdbfe;
+        }
+
+
+        .field input:focus {
+            background: #ffffff;
+
+            border-color: #3b82f6;
+
+            box-shadow:
+                0 0 0 4px rgba(59, 130, 246, 0.09);
+        }
+
+
+        .field input::placeholder {
+            color: #a0aec0;
+        }
+
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+
+            margin: 0;
+        }
+
+
+        input[type="number"] {
+            appearance: textfield;
+        }
+
+
+        /* ================================
+           ACTIONS
+        ================================= */
+
+        .actions {
+            display: flex;
+
+            align-items: center;
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            margin-top: 10px;
+
+            padding-top: 24px;
+
+            border-top: 1px solid #edf1f6;
+        }
+
+
+        .cancel-button {
+            height: 45px;
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 21px;
+
+            border: 1px solid #dbe3ef;
+
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            color: #64748b;
+
+            text-decoration: none;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition: 0.22s ease;
+        }
+
+
+        .cancel-button:hover {
+            background: #f8fafc;
+
+            color: #334155;
+
+            border-color: #cbd5e1;
+        }
+
+
+        .update-button {
+            height: 45px;
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            padding: 0 24px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(135deg,
+                    #2563eb,
+                    #4f46e5);
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: 13px;
+
+            font-weight: 750;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 9px 22px rgba(37, 99, 235, 0.24);
+
+            transition: 0.25s ease;
+        }
+
+
+        .update-button:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 13px 28px rgba(37, 99, 235, 0.32);
+        }
+
+
+        .update-button:active {
+            transform: translateY(0);
+        }
+
+
+        /* ================================
+           FOOTER
+        ================================= */
+
+        .page-footer {
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            margin-top: 18px;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+
+            font-weight: 600;
+        }
+
+
+        .footer-dot {
+            color: #22c55e;
+
+            font-size: 8px;
+        }
+
+
+        .footer-divider {
+            color: #cbd5e1;
+        }
+
+
+        /* ================================
+           RESPONSIVE
+        ================================= */
+
+        @media (max-width: 950px) {
+
+            .edit-page {
+                padding: 35px 25px;
+            }
+
+            .edit-card {
+                grid-template-columns: 1fr;
+            }
+
+            .edit-side {
+                padding: 35px;
+            }
+
+            .edit-form-area {
+                padding: 38px;
+            }
+        }
+
+
+        @media (max-width: 650px) {
+
+            .edit-page {
+                padding: 25px 15px;
+            }
+
+            .top-header {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .heading-area h1 {
+                font-size: 32px;
+            }
+
+            .back-button {
+                width: 100%;
+            }
+
+            .edit-side,
+            .edit-form-area {
+                padding: 28px 22px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full-width {
+                grid-column: auto;
+            }
+
+            .actions {
+                flex-direction: column-reverse;
+            }
+
+            .cancel-button,
+            .update-button {
+                width: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="edit-page">
+
+        <div class="edit-container">
+
+
+            <!-- ================= HEADER ================= -->
+
+            <div class="top-header">
+
+                <div class="heading-area">
+
+                    <div class="page-label">
+                        INVENTORY MANAGEMENT
+                    </div>
+
+                    <h1>
+                        Edit Product
+                    </h1>
+
+                    <p>
+                        Update product information and keep your inventory accurate.
+                    </p>
+
+                </div>
+
+
+                <a href="{{ url_for('products') }}" class="back-button">
+
+                    <span class="back-arrow">
+                        ←
+                    </span>
+
+                    Back to Products
+
+                </a>
+
+            </div>
+
+
+            <!-- ================= MAIN CARD ================= -->
+
+            <div class="edit-card">
+
+
+                <!-- ================= LEFT SIDE ================= -->
+
+                <div class="edit-side">
+
+                    <div class="edit-icon">
+                        ✏️
+                    </div>
+
+
+                    <h2>
+                        Product Workspace
+                    </h2>
+
+
+                    <p>
+                        Make changes to your product details.
+                        Your updated information will be saved
+                        directly to your inventory.
+                    </p>
+
+
+                    <!-- Current product -->
+
+                    <div class="current-product">
+
+                        <div class="current-label">
+                            Currently Editing
+                        </div>
+
+                        <div class="current-name">
+                            {{ product[1] }}
+                        </div>
+
+                        <div class="current-id">
+                            Product ID #{{ product[0] }}
+                        </div>
+
+                    </div>
+
+
+                    <!-- Steps -->
+
+                    <div class="edit-steps">
+
+                        <div class="step">
+
+                            <div class="step-number">
+                                01
+                            </div>
+
+                            <div class="step-text">
+                                Product information
+                            </div>
+
+                        </div>
+
+
+                        <div class="step">
+
+                            <div class="step-number">
+                                02
+                            </div>
+
+                            <div class="step-text">
+                                Category & brand
+                            </div>
+
+                        </div>
+
+
+                        <div class="step">
+
+                            <div class="step-number">
+                                03
+                            </div>
+
+                            <div class="step-text">
+                                Model & pricing
+                            </div>
+
+                        </div>
+
+
+                        <div class="step">
+
+                            <div class="step-number">
+                                04
+                            </div>
+
+                            <div class="step-text">
+                                Stock quantity
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= FORM ================= -->
+
+                <div class="edit-form-area">
+
+                    <form action="{{ url_for('update_product') }}" method="POST" class="edit-form">
+
+                        <!-- Hidden Product ID -->
+
+                        <input type="hidden" name="id" value="{{ product[0] }}">
+
+
+                        <div class="form-heading">
+
+                            <h3>
+                                Product Details
+                            </h3>
+
+                            <p>
+                                Modify the fields below and save your changes.
+                            </p>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+
+                            <!-- Product Name -->
+
+                            <div class="field full-width">
+
+                                <label for="product_name">
+                                    Product Name
+                                </label>
+
+                                <div class="input-box">
+
+                                    <span class="input-symbol">
+                                        📦
+                                    </span>
+
+                                    <input type="text" id="product_name" name="product_name" value="{{ product[1] }}"
+                                        required autocomplete="off">
+
+                                </div>
+
+                            </div>
+
+
+
+
+
+                            <!-- Price -->
+
+                            <div class="field">
+
+                                <label for="price">
+                                    Product Price
+                                </label>
+
+                                <div class="input-box">
+
+                                    <span class="input-symbol">
+                                        ₹
+                                    </span>
+
+                                    <input type="number" step="0.01" min="0" id="price" name="price"
+                                        value="{{ product[2] }}" required>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Quantity -->
+
+                            <div class="field">
+
+                                <label for="quantity">
+                                    Quantity
+                                </label>
+
+                                <div class="input-box">
+
+                                    <span class="input-symbol">
+                                        ▣
+                                    </span>
+
+                                    <input type="number" min="0" id="quantity" name="quantity" value="{{ product[3] }}"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- Buttons -->
+
+                        <div class="actions">
+
+                            <a href="{{ url_for('products') }}" class="cancel-button">
+                                Cancel
+                            </a>
+
+
+                            <button type="submit" class="update-button">
+                                ✓
+                                Update Product
+                            </button>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ================= FOOTER ================= -->
+
+            <div class="page-footer">
+
+                <span class="footer-dot">
+                    ●
+                </span>
+
+                Inventory System
+
+                <span class="footer-divider">
+                    |
+                </span>
+
+                Secure Product Management
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
