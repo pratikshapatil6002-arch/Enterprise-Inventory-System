@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Home | Enterprise Inventory System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <style>
+        .user-container {
+            padding: 35px;
+        }
+
+        .welcome {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .welcome h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .welcome p {
+            margin-top: 8px;
+            opacity: .9;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+        }
+
+        .product-card h3 {
+            margin: 0 0 10px;
+            color: #1f2937;
+        }
+
+        .price {
+            color: #16a34a;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .qty {
+            margin-top: 10px;
+            color: #6b7280;
+        }
+
+        .search-box {
+            margin-bottom: 25px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        .logout {
+            float: right;
+            color: white;
+            text-decoration: none;
+            background: rgba(255, 255, 255, .2);
+            padding: 8px 15px;
+            border-radius: 8px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="user-container">
+
+        <div class="welcome">
+
+            <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+
+            <h1>Welcome, {{ user_name }} 👋</h1>
+
+            <p>Browse available products in the Enterprise Inventory System.</p>
+
+        </div>
+
+
+        <div class="search-box">
+
+            <input type="text" id="searchInput" placeholder="Search product..." onkeyup="searchProduct()">
+
+        </div>
+
+
+        <div class="product-grid" id="productGrid">
+
+            {% for product in products %}
+
+            <div class="product-card">
+
+                <h3>{{ product[1] }}</h3>
+
+                <div class="price">₹ {{ product[2] }}</div>
+
+                <div class="qty">
+                    Stock Available: <strong>{{ product[3] }}</strong>
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <script>
+        function searchProduct() {
+
+            let input = document.getElementById("searchInput").value.toLowerCase();
+
+            let cards = document.getElementsByClassName("product-card");
+
+            for (let i = 0; i < cards.length; i++) {
+
+                let name = cards[i].getElementsByTagName("h3")[0].innerText.toLowerCase();
+
+                if (name.includes(input)) {
+                    cards[i].style.display = "block";
+                }
+                else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+
+</body>
+
+</html>
