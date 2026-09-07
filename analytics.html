@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics - Enterprise Inventory System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <style>
+        /* =========================================
+           ANALYTICS PAGE
+        ========================================= */
+
+        .analytics-container {
+            padding: 40px;
+            max-width: 1450px;
+            margin: 0 auto;
+        }
+
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .analytics-header {
+            margin-bottom: 35px;
+        }
+
+        .analytics-header h1 {
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 8px;
+        }
+
+        .analytics-header p {
+            color: #8b95a7;
+            font-size: 15px;
+            margin: 0;
+        }
+
+
+        /* =========================================
+           INSIGHT CARDS
+        ========================================= */
+
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px;
+            margin-bottom: 25px;
+        }
+
+        .insight-card {
+            position: relative;
+            background: #111722;
+            border: 1px solid #252c38;
+            border-radius: 20px;
+            padding: 28px;
+            overflow: hidden;
+            transition: 0.3s ease;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-3px);
+            border-color: #3a4657;
+        }
+
+        .insight-card::after {
+            content: "";
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            right: -50px;
+            bottom: -60px;
+            background: rgba(101, 247, 255, 0.06);
+            border-radius: 50%;
+        }
+
+        .insight-icon {
+            font-size: 30px;
+            margin-bottom: 18px;
+        }
+
+        .insight-label {
+            color: #7f8999;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 9px;
+        }
+
+        .insight-name {
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .insight-value {
+            color: #65f7ff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+
+        /* =========================================
+           MAIN ANALYTICS GRID
+        ========================================= */
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 25px;
+        }
+
+
+        /* =========================================
+           GENERAL CARD
+        ========================================= */
+
+        .analytics-card {
+            background: #111722;
+            border: 1px solid #252c38;
+            border-radius: 20px;
+            padding: 30px;
+        }
+
+        .analytics-card h2 {
+            color: #ffffff;
+            font-size: 20px;
+            margin: 0 0 7px;
+        }
+
+        .analytics-description {
+            color: #7f8999;
+            font-size: 13px;
+            margin-bottom: 30px;
+        }
+
+
+        /* =========================================
+           STOCK DISTRIBUTION
+        ========================================= */
+
+        .stock-product {
+            margin-bottom: 25px;
+        }
+
+        .stock-product:last-child {
+            margin-bottom: 0;
+        }
+
+        .stock-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .stock-name {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .stock-quantity {
+            color: #65f7ff;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .progress-background {
+            width: 100%;
+            height: 12px;
+            background: #202632;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg,
+                    #65f7ff,
+                    #358cff,
+                    #7047ff);
+            border-radius: 20px;
+            min-width: 2%;
+        }
+
+
+        /* =========================================
+           INVENTORY VALUE
+        ========================================= */
+
+        .value-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #252c38;
+        }
+
+        .value-item:first-child {
+            padding-top: 0;
+        }
+
+        .value-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .value-product {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .value-calculation {
+            color: #7f8999;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .value-total {
+            color: #65f7ff;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: right;
+        }
+
+
+        /* =========================================
+           STOCK RISK
+        ========================================= */
+
+        .risk-card {
+            margin-top: 25px;
+        }
+
+        .risk-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 16px 18px;
+            margin-bottom: 12px;
+            background: #181d27;
+            border: 1px solid #2a313d;
+            border-radius: 13px;
+        }
+
+        .risk-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .risk-name {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .risk-quantity {
+            color: #ffb454;
+            font-size: 12px;
+        }
+
+        .risk-badge {
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .low-stock {
+            color: #ffb454;
+            background: rgba(255, 180, 84, 0.10);
+            border: 1px solid rgba(255, 180, 84, 0.18);
+        }
+
+        .out-stock {
+            color: #ff7070;
+            background: rgba(255, 112, 112, 0.10);
+            border: 1px solid rgba(255, 112, 112, 0.18);
+        }
+
+        .healthy-message {
+            padding: 18px;
+            color: #69e6a5;
+            background: rgba(105, 230, 165, 0.07);
+            border: 1px solid rgba(105, 230, 165, 0.15);
+            border-radius: 12px;
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           EMPTY STATE
+        ========================================= */
+
+        .empty {
+            color: #7f8999;
+            text-align: center;
+            padding: 35px 10px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 1000px) {
+
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .analytics-container {
+                padding: 25px 18px;
+            }
+
+            .analytics-header h1 {
+                font-size: 27px;
+            }
+
+            .insight-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analytics-card {
+                padding: 22px;
+            }
+
+            .risk-item {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+        }
+
+        /* ===== NEW INVENTORY VALUE DESIGN ===== */
+
+        .inventory-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            gap: 20px;
+        }
+
+        .inventory-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .rupee-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .inventory-title h2 {
+            color: #fff;
+            margin: 0;
+            font-size: 26px;
+        }
+
+        .inventory-title p {
+            margin: 4px 0 0;
+            color: #8b95a7;
+            font-size: 13px;
+        }
+
+        .total-value-box {
+            background: #181f2b;
+            border: 1px solid #2b3647;
+            border-radius: 14px;
+            padding: 14px 18px;
+            text-align: right;
+        }
+
+        .total-value-box span {
+            color: #8b95a7;
+            font-size: 12px;
+        }
+
+        .total-value-box h3 {
+            color: #65f7ff;
+            margin: 6px 0 0;
+            font-size: 22px;
+        }
+
+        .inventory-row {
+            display: grid;
+            grid-template-columns: 1fr 90px 150px;
+            align-items: center;
+            gap: 18px;
+            background: #181f2b;
+            border: 1px solid #273243;
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 14px;
+            transition: .25s ease;
+        }
+
+        .inventory-row:hover {
+            transform: translateY(-2px);
+            border-color: #358cff;
+            box-shadow: 0 8px 20px rgba(53, 140, 255, .15);
+        }
+
+        .product-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .product-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .product-left h4 {
+            color: #fff;
+            margin: 0;
+            font-size: 17px;
+        }
+
+        .product-left p {
+            color: #8b95a7;
+            margin: 4px 0 0;
+            font-size: 12px;
+        }
+
+        .qty-pill {
+            background: rgba(101, 247, 255, .10);
+            color: #65f7ff;
+            border: 1px solid rgba(101, 247, 255, .25);
+            border-radius: 999px;
+            padding: 8px 0;
+            text-align: center;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .row-total {
+            color: #65f7ff;
+            text-align: right;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        @media(max-width:768px) {
+
+            .inventory-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .inventory-row {
+                grid-template-columns: 1fr;
+            }
+
+            .row-total {
+                text-align: left;
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="analytics-container">
+
+
+        <!-- =========================================
+         HEADER
+    ========================================== -->
+
+        <div class="analytics-header">
+
+            <h1>📊 Inventory Analytics</h1>
+
+            <p>
+                Analyze stock distribution, inventory value and stock risks.
+            </p>
+
+        </div>
+
+
+        <!-- =========================================
+         KEY INSIGHTS
+    ========================================== -->
+
+        <div class="insight-grid">
+
+
+            <!-- Highest Stock -->
+
+            <div class="insight-card">
+
+                <div class="insight-icon">
+                    🏆
+                </div>
+
+                <div class="insight-label">
+                    HIGHEST STOCKED PRODUCT
+                </div>
+
+                {% if highest_stock_product %}
+
+                <div class="insight-name">
+                    {{ highest_stock_product[1] }}
+                </div>
+
+                <div class="insight-value">
+                    {{ highest_stock_product[3] }} units currently available
+                </div>
+
+                {% else %}
+
+                <div class="insight-name">
+                    No Data
+                </div>
+
+                <div class="insight-value">
+                    No products available
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Highest Value -->
+
+            <div class="insight-card">
+
+                <div class="insight-icon">
+                    💰
+                </div>
+
+                <div class="insight-label">
+                    HIGHEST VALUE PRODUCT
+                </div>
+
+                {% if highest_value_product %}
+
+                <div class="insight-name">
+                    {{ highest_value_product[1] }}
+                </div>
+
+                <div class="insight-value">
+                    ₹{{ "%.2f"|format(highest_value_product[2] * highest_value_product[3]) }}
+                    inventory value
+                </div>
+
+                {% else %}
+
+                <div class="insight-name">
+                    No Data
+                </div>
+
+                <div class="insight-value">
+                    No products available
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+         MAIN ANALYTICS
+    ========================================== -->
+
+        <div class="analytics-grid">
+
+
+            <!-- STOCK DISTRIBUTION -->
+
+            <div class="analytics-card">
+
+                <h2>
+                    📈 Stock Distribution
+                </h2>
+
+                <div class="analytics-description">
+                    Compare the available quantity of every product.
+                </div>
+
+
+                {% if products %}
+
+                {% for product in products %}
+
+                <div class="stock-product">
+
+                    <div class="stock-info">
+
+                        <span class="stock-name">
+                            📦 {{ product[1] }}
+                        </span>
+
+                        <span class="stock-quantity">
+                            {{ product[3] }} units
+                        </span>
+
+                    </div>
+
+                    <div class="progress-background" style="--progress: {{ product[4] | float }}%;">
+
+                        <div class="progress-bar"></div>
+
+                    </div>
+
+                    {% endfor %}
+
+                    {% else %}
+
+                    <div class="empty">
+                        No products available for analysis.
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- INVENTORY VALUE -->
+                <div class="analytics-card">
+
+                    <div class="inventory-header">
+
+                        <div class="inventory-title">
+                            <div class="rupee-icon">₹</div>
+
+                            <div>
+                                <h2>Inventory Value</h2>
+                                <p>Real-time product value based on price × quantity</p>
+                            </div>
+                        </div>
+
+                        <div class="total-value-box">
+                            <span>Total Value</span>
+                            <h3>₹{{ "%.2f"|format(total_inventory_value) }}</h3>
+                        </div>
+
+                    </div>
+
+                    {% if products %}
+
+                    {% for product in products %}
+
+                    <div class="inventory-row">
+
+                        <div class="product-left">
+                            <div class="product-icon">📦</div>
+
+                            <div>
+                                <h4>{{ product[1] }}</h4>
+                                <p>₹{{ "%.2f"|format(product[2]) }} × {{ product[3] }} units</p>
+                            </div>
+                        </div>
+
+                        <div class="qty-pill">
+                            {{ product[3] }} pcs
+                        </div>
+
+                        <div class="row-total">
+                            ₹{{ "%.2f"|format(product[5]) }}
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                    {% else %}
+
+                    <div class="empty">
+                        No inventory data available.
+                    </div>
+
+                    {% endif %}
+                    <div class="summary-grid">
+
+                        <div class="summary-box green">
+                            <div class="summary-label">Highest Value</div>
+                            <div class="summary-name">
+                                {{ highest_value_product[1] if highest_value_product else "N/A" }}
+                            </div>
+                            <div class="summary-number">
+                                ₹{{ "%.0f"|format(highest_value_product[2] * highest_value_product[3]) if
+                                highest_value_product else 0 }}
+                            </div>
+                        </div>
+
+                        <div class="summary-box blue">
+                            <div class="summary-label">Total Products</div>
+                            <div class="summary-name">Available Items</div>
+                            <div class="summary-number">{{ products|length }}</div>
+                        </div>
+
+                        <div class="summary-box purple">
+                            <div class="summary-label">Total Quantity</div>
+                            <div class="summary-name">Units in Stock</div>
+                            <div class="summary-number">{{ total_quantity }}</div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================================
+         STOCK RISK
+    ========================================== -->
+
+            <div class="analytics-card risk-card">
+
+                <h2>
+                    ⚠️ Stock Risk Analysis
+                </h2>
+
+                <div class="analytics-description">
+                    Products that need attention based on their current stock level.
+                </div>
+
+
+                {% if low_stock_products %}
+
+                {% for product in low_stock_products %}
+
+                <div class="risk-item">
+
+                    <div>
+
+                        <div class="risk-name">
+                            📦 {{ product[1] }}
+                        </div>
+
+                        <div class="risk-quantity">
+                            {{ product[3] }} units remaining
+                        </div>
+
+                    </div>
+
+
+                    {% if product[3] == 0 %}
+
+                    <div class="risk-badge out-stock">
+                        OUT OF STOCK
+                    </div>
+
+                    {% else %}
+
+                    <div class="risk-badge low-stock">
+                        LOW STOCK
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+                {% endfor %}
+
+                {% else %}
+
+                <div class="healthy-message">
+                    ✓ All products currently have healthy stock levels.
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+        </div>
+
+</body>
+
+</html>
