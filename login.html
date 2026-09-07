@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login - Enterprise Inventory System</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <div class="main-container">
+
+        <!-- Left Information Section -->
+        <div class="left-side">
+
+            <h1>Enterprise Inventory System</h1>
+
+            <p>
+                Manage your inventory smartly and efficiently.
+            </p>
+
+            <h3>Features</h3>
+
+            <p>📦 Product Management</p>
+            <p>📊 Stock Tracking</p>
+            <p>🚚 Supplier Management</p>
+            <p>📈 Reports & Analytics</p>
+
+        </div>
+
+
+        <!-- Login Section -->
+        <div class="container">
+
+            <div class="logo">📦</div>
+
+            <h2>Login</h2>
+
+            <form action="/login" method="POST">
+
+                <label>Username</label>
+                <input type="text" name="username" placeholder="Enter Username">
+
+
+                <label>Password</label>
+                <input type="password" name="password" placeholder="Enter Password">
+
+
+                <button type="submit">Login</button>
+
+            </form>
+            <p style="text-align:center;">
+                <a href="/register">Create New Account</a>
+            </p>
+
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>
